@@ -75,6 +75,18 @@ void elf_server::ReadData(){
                 goto read_res;
             }
             break;
+        case UPDATE_USER_ELF:
+            update_user_elf(parts[next], parts[next+1].toInt(), parts[next+2]);
+            next += 3;
+            if (parts[next].size() == 1 && parts[next] < (QChar)NO_EVENT){
+                start = next;
+                next++;
+                goto read_res;
+            }
+            break;
+        case DELETE_USER_ELF:
+            delete_user_elf(parts[next], parts[next+1].toInt());
+            break;
     }
 }
 
@@ -152,7 +164,6 @@ void elf_server::createAccountTable(const QSqlDatabase db) {
     }
 }
 
-
 void elf_server::insertAccount(const QSqlDatabase db, const QString& username, const QString& password) {
     QSqlQuery query(db);
     query.prepare("INSERT INTO Accounts (username, password) VALUES (?, ?)");
@@ -163,7 +174,6 @@ void elf_server::insertAccount(const QSqlDatabase db, const QString& username, c
         return;
     }
 }
-
 
 void elf_server::SendData(const QString& data){
     //qDebug() << data;
@@ -192,7 +202,7 @@ void elf_server::create_user_info_table(const QSqlDatabase db, const QString& us
     }
     QSqlQuery query(db);
     query.prepare("CREATE TABLE " + tableName + " ("
-                                                              "elf_id INTEGER PRIMARY KEY,"
+                                                              "elf_id INTEGER PRIMARY KEY AUTOINCREMENT,"
                                                               "elf_name TEXT,"
                                                               "elf_level INTEGER,"
                                                               "exp INTEGER,"
@@ -260,6 +270,64 @@ void elf_server::add_user_elf(const QString& username, const QString& elf_data) 
     }
 }
 
+void elf_server::update_user_elf(const QString& username, const int user_elf_id, const QString& elf_data){
+    QSqlDatabase db = QSqlDatabase::database();
+    QStringList parts = elf_data.split(',');
+    if (!db.isOpen()) {
+        qDebug() << "Error: Database is not open";
+        return;
+    }
+    QSqlQuery query(db);
+    QString tableName = '_' + username + "_user_info";
+    qDebug() << "Number of data items: " << parts.size();
+    query.prepare("UPDATE " + tableName + " SET elf_name = ?, elf_level = ?, exp = ?, elf_attr = ?, HP = ?, ATK = ?, DEF = ?, ATK_INTERVAL = ?, CRIT_Rate = ?, AGI = ?, up_HP = ?, up_ATK = ?, up_DEF = ?, up_ATK_INTERVAL = ?, up_CRIT_Rate = ?, up_AGI = ?, elf_skills_1 = ?, elf_skills_2 = ?, elf_skills_3 = ?, elf_skills_4 = ? WHERE elf_id = ?");
+    query.addBindValue(parts[0]); // elf_name
+    query.addBindValue(parts[1].toInt()); // elf_level
+    query.addBindValue(parts[2].toInt()); // exp
+    query.addBindValue(parts[3]); // elf_attr
+    query.addBindValue(parts[4].toDouble()); // HP
+    query.addBindValue(parts[5].toDouble()); // ATK
+    query.addBindValue(parts[6].toDouble()); // DEF
+    query.addBindValue(parts[7].toDouble()); // ATK_INTERVAL
+    query.addBindValue(parts[8].toDouble()); // CRIT_Rate
+    query.addBindValue(parts[9].toDouble()); // AGI
+    query.addBindValue(parts[10].toDouble()); // up_HP
+    query.addBindValue(parts[11].toDouble()); // up_ATK
+    query.addBindValue(parts[12].toDouble()); // up_DEF
+    query.addBindValue(parts[13].toDouble()); // up_ATK_INTERVAL
+    query.addBindValue(parts[14].toDouble()); // up_CRIT_Rate
+    query.addBindValue(parts[15].toDouble()); // up_AGI
+    query.addBindValue(parts[16].toInt()); // elf_skills_1
+    query.addBindValue(parts[17].toInt()); // elf_skills_2
+    query.addBindValue(parts[18].toInt()); // elf_skills_3
+    query.addBindValue(parts[19].toInt()); // elf_skills_4
+    query.addBindValue(user_elf_id); // elf_id
+
+    qDebug() << "SQL query: " << query.lastQuery();
+    if (!query.exec()) {
+        qDebug() << "Error update query: " << query.lastError().text();
+    }
+}
+
+void elf_server::delete_user_elf(const QString& username, const int user_elf_id){
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "Error: Database is not open";
+        return;
+    }
+
+    QSqlQuery query(db);
+    QString tableName = '_' + username + "_user_info";
+    query.prepare("DELETE FROM " + tableName + " WHERE elf_id = ?");
+    query.addBindValue(user_elf_id);
+
+    if (!query.exec()) {
+        qDebug() << "Error deleting user elf:" << query.lastError().text();
+    } else {
+        qDebug() << "User elf deleted successfully!";
+    }
+}
+
 void elf_server::Send_user_info(const QString& username){
     QSqlDatabase db = QSqlDatabase::database();
     QString tableName = '_' + username + "_user_info";
@@ -278,7 +346,7 @@ void elf_server::Send_user_info(const QString& username){
         QString elf_name = query.value(1).toString();
         int elf_level = query.value(2).toInt();
         int experience = query.value(3).toInt();
-        int elf_attr = query.value(4).toInt();
+        QString elf_attr = query.value(4).toString();
         double HP = query.value(5).toDouble();
         double ATK = query.value(6).toDouble();
         double DEF = query.value(7).toDouble();
@@ -295,14 +363,14 @@ void elf_server::Send_user_info(const QString& username){
         int elf_skills_2 = query.value(18).toInt();
         int elf_skills_3 = query.value(19).toInt();
         int elf_skills_4 = query.value(20).toInt();
-
+        int elf_id = query.value(0).toInt();
         data += elf_name + "," + QString::number(elf_level) + "," + QString::number(experience) + "," +
-                QString::number(elf_attr) + "," +
+                elf_attr + "," +
                 QString::number(HP) + "," + QString::number(ATK) + "," + QString::number(DEF) + "," +
                 QString::number(ATK_INTERVAL) + "," + QString::number(CRIT_Rate) + "," + QString::number(AGI) + "," +
                 QString::number(up_HP) + "," + QString::number(up_ATK) + "," + QString::number(up_DEF) + "," +
                 QString::number(up_ATK_INTERVAL) + "," + QString::number(up_CRIT_Rate) + "," + QString::number(up_AGI) + "," +
-                QString::number(elf_skills_1) + "," + QString::number(elf_skills_2) + "," + QString::number(elf_skills_3) + "," + QString::number(elf_skills_4) + "&";
+                QString::number(elf_skills_1) + "," + QString::number(elf_skills_2) + "," + QString::number(elf_skills_3) + "," + QString::number(elf_skills_4) + "," + QString::number(elf_id) + "&";
     }
     SendData(data);
 }

@@ -330,7 +330,7 @@
              </sizepolicy>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab">
              <attribute name="title">
@@ -598,7 +598,7 @@
                </layout>
               </item>
               <item row="0" column="3">
-               <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,1,0,1">
+               <layout class="QVBoxLayout" name="verticalLayout_6" stretch="0,1,0,0,1">
                 <item>
                  <spacer name="verticalSpacer_11">
                   <property name="orientation">
@@ -891,6 +891,19 @@
                    </widget>
                   </item>
                  </layout>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox">
+                  <property name="text">
+                   <string>自动战斗</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                  <property name="tristate">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer name="verticalSpacer_10">
@@ -1750,6 +1763,11 @@
                </spacer>
               </item>
              </layout>
+            </widget>
+            <widget class="QWidget" name="tab_2">
+             <attribute name="title">
+              <string>页</string>
+             </attribute>
             </widget>
            </widget>
           </item>

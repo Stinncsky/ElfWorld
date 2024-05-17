@@ -9,9 +9,6 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    All_Buffs.cpp \
-    All_Elfs.cpp \
-    All_Skills.cpp \
     buff.cpp \
     elf_member.cpp \
     elf_skill.cpp \
@@ -19,6 +16,7 @@ SOURCES += \
     elf.cpp
 
 HEADERS += \
+    attribute.h \
     buff.h \
     elf.h \
     elf_member.h \

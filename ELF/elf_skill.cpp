@@ -1,14 +1,15 @@
 #include "elf_skill.h"
 #include <random>
 
-elf_skill::elf_skill(QString name, double dmg, double cd, Attribute attr, Buff buff, bool tgt, double buff_rate):
+elf_skill::elf_skill(QString name, double dmg, double cd, Attribute attr, Buff buff, bool tgt, double buff_rate, QString desc):
     skill_name(name),
     skill_tgt(tgt),
     damage(dmg),
     cooldown(cd),
     skill_attribute(attr),
     skill_buff(buff),
-    skill_buff_rate(buff_rate)
+    skill_buff_rate(buff_rate),
+    description(desc)
 {
     // 如果需要，添加构造函数体
 }
@@ -27,4 +28,8 @@ bool elf_skill::Rate_Result() const{
     std::uniform_real_distribution<> dis(0, 1);
     double random_number = dis(gen);
     return random_number < skill_buff_rate;
+}
+
+QString elf_skill::Desc() const{
+    return description;
 }

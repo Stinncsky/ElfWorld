@@ -1,34 +1,84 @@
 #include "elf_member.h"
-
-/*elf_member::elf_member(QString name, int level, Attribute attr, int experience)
-    : elf_name(name), elf_level(level), exp(experience), elf_attr(attr),
-    HP(INIT_HP * std::pow(INIT_UP_HP,level-1)), ATK(INIT_ATK * std::pow(INIT_UP_ATK,level-1)), DEF(INIT_DEF * std::pow(INIT_UP_DEF,level-1)), ATK_INTERVAL(INIT_ATK_INTERVAL * std::pow(INIT_UP_ATK_INTERVAL,level-1)),
-    CRIT_Rate(INIT_CRIT_RATE * std::pow(INIT_UP_CRIT_RATE,level-1)), AGI(INIT_AGI * std::pow(INIT_UP_AGI,level-1)),
-    up_HP(INIT_UP_HP), up_ATK(INIT_UP_ATK), up_DEF(INIT_UP_DEF), 
-    up_ATK_INTERVAL(INIT_UP_ATK_INTERVAL), up_CRIT_Rate(INIT_UP_CRIT_RATE), up_AGI(INIT_UP_AGI) 
-{
-    // 其他初始化代码...
-}*/
+std::vector<Attribute> attributes = {
+    {"金"},
+    {"木"},
+    {"水"},
+    {"火"},
+    {"土"},
+    {"电"}
+};
 
 elf_member::elf_member(QString name, int level, int experience, Attribute attr,
                                              double hp, double atk, double def, double atk_interval, 
                                              double crit_rate, double agi, 
                                              double up_hp, double up_atk, double up_def, 
                                              double up_atk_interval, double up_crit_rate, double up_agi)
-        : elf_name(name), elf_level(level), exp(experience), elf_attr(attr),
-    HP(hp * std::pow(up_hp,level-1)), ATK(atk * std::pow(up_atk,level-1)), DEF(def * std::pow(up_def,level-1)), ATK_INTERVAL(atk_interval * std::pow(up_atk_interval,level-1)),
-            CRIT_Rate(crit_rate * std::pow(up_crit_rate,level-1)), AGI(agi * std::pow(up_agi,level-1)),
+    : elf_name(name), elf_level(level), exp(experience), elf_attr(attr),
+    HP(hp), ATK(atk), DEF(def), ATK_INTERVAL(atk_interval),
+            CRIT_Rate(crit_rate), AGI(agi),
             up_HP(up_hp), up_ATK(up_atk), up_DEF(up_def), 
             up_ATK_INTERVAL(up_atk_interval), up_CRIT_Rate(up_crit_rate), up_AGI(up_agi) 
 {
     // 其他初始化代码...
 }
 
+elf_member::elf_member(const elf_member& other) :
+    elf_id(other.elf_id),
+    elf_name(other.elf_name),
+    elf_level(other.elf_level),
+    exp(other.exp),
+    elf_attr(other.elf_attr),
+    HP(other.HP), // 使用其他对象的 HP 值
+    ATK(other.ATK),
+    DEF(other.DEF),
+    ATK_INTERVAL(other.ATK_INTERVAL),
+    CRIT_Rate(other.CRIT_Rate),
+    AGI(other.AGI),
+    up_HP(other.up_HP),
+    up_ATK(other.up_ATK),
+    up_DEF(other.up_DEF),
+    up_ATK_INTERVAL(other.up_ATK_INTERVAL),
+    up_CRIT_Rate(other.up_CRIT_Rate),
+    up_AGI(other.up_AGI)
+{
+    // 复制技能数组
+    for (int i = 0; i < MAX_SKILL_NUM; ++i) {
+        elf_skills[i] = other.elf_skills[i];
+    }
+}
 
+elf_member& elf_member::operator=(const elf_member& other) {
+    if (this != &other) { // 检查是否自赋值
+        // 从 'other' 复制成员变量到 'this'
+        elf_id = other.elf_id;
+        elf_name = other.elf_name;
+        elf_level = other.elf_level;
+        exp = other.exp;
+        elf_attr = other.elf_attr;
+        HP = other.HP;
+        ATK = other.ATK;
+        DEF = other.DEF;
+        ATK_INTERVAL = other.ATK_INTERVAL;
+        CRIT_Rate = other.CRIT_Rate;
+        AGI = other.AGI;
+        up_HP = other.up_HP;
+        up_ATK = other.up_ATK;
+        up_DEF = other.up_DEF;
+        up_ATK_INTERVAL = other.up_ATK_INTERVAL;
+        up_CRIT_Rate = other.up_CRIT_Rate;
+        up_AGI = other.up_AGI;
+        // 复制 elf_skills 数组
+        for (int i = 0; i < MAX_SKILL_NUM; ++i) {
+            elf_skills[i] = other.elf_skills[i];
+        }
+    }
+    return *this;
+}
 
 QString elf_member::Elf_name() const { return elf_name; }
 int elf_member::Elf_level() const { return elf_level; }
 Attribute elf_member::Elf_attr() const { return elf_attr; }
+int elf_member::Elf_id() const { return elf_id; }
 double elf_member::Atk() const { return ATK; }
 double elf_member::Def() const { return DEF; }
 double elf_member::Hp() const { return HP; }
@@ -48,6 +98,7 @@ double elf_member::Fting_ATK_INTERVAL() const { return fting_ATK_INTERVAL; }
 double elf_member::Fting_CRIT_Rate() const { return fting_CRIT_Rate; }
 double elf_member::Fting_AGI() const { return fting_AGI; }
 int elf_member::Exp() const { return exp; }
+int elf_member::Up_Exp() const { return (elf_level + 1) * (elf_level) / 2 * 100; }
 const elf_skill* elf_member::Elf_skills() const { return elf_skills; }
 
 
@@ -90,20 +141,29 @@ QString elf_member::normal_ATK(elf_member &enemy){
     }
     if (!getProbabilityResult(enemy.fting_AGI)){
         enemy.fting_HP -= DMG;
-        return elf_name + "造成了成吨的伤害！";
+        enemy.fting_HP = std::max(enemy.fting_HP, 0.0);
+        return elf_name + "对" + enemy.Elf_name() + "造成了" + "<font color=\"#800000\">" + QString::number(DMG) + "</font>" + "伤害";
     } else {
         return enemy.elf_name + "用矫健的步伐闪过了这次攻击！";
     }
 }
 
+void elf_member::get_exp(const int addition){
+    exp += addition;
+    level_up();
+}
+
 void elf_member::level_up(){
-    elf_level++;
-    HP *= up_HP;
-    ATK *= up_ATK;
-    DEF *= up_DEF;
-    ATK_INTERVAL *= up_ATK_INTERVAL;
-    AGI *= up_AGI;
-    CRIT_Rate *= up_CRIT_Rate;
+    while (exp >= Up_Exp() && elf_level < MAX_LEVEL){
+        exp -= Up_Exp();
+        elf_level++;
+        HP *= up_HP;
+        ATK *= up_ATK;
+        DEF *= up_DEF;
+        ATK_INTERVAL *= up_ATK_INTERVAL;
+        AGI *= up_AGI;
+        CRIT_Rate *= up_CRIT_Rate;
+    }
 }
 
 void elf_member::start_battle(){
@@ -113,24 +173,27 @@ void elf_member::start_battle(){
     fting_ATK_INTERVAL = ATK_INTERVAL;
     fting_CRIT_Rate = CRIT_Rate;
     fting_AGI = AGI;
-    for (auto &i : elf_state) {
-        buff_erase(i);
-    }
+    elf_state.clear();
 }
 
-void elf_member::skill_effect(const elf_skill skill, const double ATK){
-    double DMG = skill.DMG() * ATK / 100.0;
-    auto attr = attributeRelations.find({skill.Attr(), elf_attr});
-    if (attr != attributeRelations.end()) {
-        if (attr->second == AttributeRelationship::STRONG) {
-            DMG *= 1.6;
-        } else if (attr->second == AttributeRelationship::WEAK) {
-            DMG *= 0.67;
+QString elf_member::skill_effect(const elf_skill skill, const double ATK, const bool tgt){
+    QString info;
+    if (tgt){
+        double DMG = skill.DMG() * ATK / 100.0;
+        auto attr = attributeRelations.find({skill.Attr(), elf_attr});
+        if (attr != attributeRelations.end()) {
+            if (attr->second == AttributeRelationship::STRONG) {
+                DMG *= 1.6;
+            } else if (attr->second == AttributeRelationship::WEAK) {
+                DMG *= 0.67;
+            }
         }
+        fting_HP -= DMG;
+        fting_HP = std::max(fting_HP, 0.0);
+        info += elf_name + "造成了" + "<font color=\"#800000\">" + QString::number(DMG) + "</font>" + "的伤害!";
     }
-    fting_HP -= DMG;
     if (!skill.Rate_Result())
-        return;
+        return info;
     auto it = elf_state.find(skill.buff());
     if (it != elf_state.end()) {
         // 键存在于set中
@@ -144,17 +207,19 @@ void elf_member::skill_effect(const elf_skill skill, const double ATK){
         // 将修改后的 Buff 对象插入回set中
         elf_state.insert(oldBuff);
         buff_inspire(oldBuff);
+        info += "并让" + elf_name + "的<font color=\"#1788C0\">" +skill.buff().Name() + "</font>" + "效果提升!";
     } else {
         // 键不存在于set中
         elf_state.insert(skill.buff());
         buff_inspire(skill.buff());
+        info += "对" + elf_name + "施加了" + "<font color=\"#1788C0\">" +skill.buff().Name() + "</font>" + "的效果";
     }
+    return info;
 }
-
 // 更改对buff函数的调用
 QString elf_member::buff_inspire(const Buff buff){
     if (buff.Hp() != 0) {
-        state_HP.emplace_back(buff.Hp());
+         state_HP.emplace_back(std::make_pair(buff.Hp(), buff.Name()));
     }
     fting_AGI = std::max(fting_AGI + buff.Agi(), 0.0);
     fting_ATK = std::max(fting_ATK + buff.Atk(), 0.0);
@@ -166,7 +231,7 @@ QString elf_member::buff_inspire(const Buff buff){
 
 void elf_member::buff_erase(const Buff buff){
     if (buff.Hp() != 0) {
-        state_HP.erase(std::find(state_HP.begin(), state_HP.end(), buff.Hp()));
+        state_HP.erase(std::find(state_HP.begin(), state_HP.end(), std::make_pair(buff.Hp(), buff.Name())));
     }
     fting_AGI = std::max(fting_AGI - buff.Agi(), 0.0);
     fting_ATK = std::max(fting_ATK - buff.Atk(), 0.0);
@@ -175,37 +240,27 @@ void elf_member::buff_erase(const Buff buff){
     fting_CRIT_Rate = std::max(fting_CRIT_Rate - buff.Crit(), 0.0);
 }
 
-void elf_member::buff_to_HP(){
+QString elf_member::buff_to_HP(){
+    QString info;
     for (auto &i : state_HP) {
-        fting_HP += i;
+        fting_HP += i.first;
+        if (i.first > 0) {
+            info += "<font color=\"#1788C0\">" +i.second + "</font>" + "回复了<font color=\"#17C082\">" + QString::number(i.first) + "</font>" + "生命值。\n";
+        } else {
+            info += "<font color=\"#1788C0\">" +i.second + "</font>" + "扣除了<font color=\"#800000\">" + QString::number(i.first) + "</font>" + "生命值。\n";
+        }
     }
+    fting_HP = std::max(fting_HP, 0.0);
+    return info;
 }
 
 QString elf_member::release_skill(elf_member &enemy, int sid){
     if(elf_skills[sid].TGT()){
-        enemy.skill_effect(elf_skills[sid], ATK);
+        return enemy.skill_effect(elf_skills[sid], ATK, 1);
     } else {
-        skill_effect(elf_skills[sid], ATK);
+        return skill_effect(elf_skills[sid], ATK, 0);
     }
 }
-
-/*elf_power::elf_power(QString name, int level, int experience, Attribute attr)
-    : elf_member(name, level, experience, attr)
-{
-    HP -= 50;
-    ATK *= (pow(1.2, level - 1) / pow(1.1, level - 1));
-    up_ATK = 1.2;
-    ATK_INTERVAL *= 2.0;
-}
-
-elf_power::elf_power(QString name, int level, int experience, Attribute attr,
-                     double atk, double up_atk, double hp, double up_hp, double atk_interval, double up_atk_interval)
-    : elf_member(name, level, experience, attr,
-                 hp, atk, INIT_DEF, atk_interval, INIT_CRIT_RATE * 0.5, INIT_AGI * 0, 
-                 up_hp, up_atk, INIT_UP_DEF, up_atk_interval, INIT_UP_CRIT_RATE, INIT_UP_AGI)
-{
-
-}*/
 
 elf_power::elf_power(QString name, int level, int experience, Attribute attr,
                      double hp, double atk, double def, double atk_interval,
@@ -213,24 +268,6 @@ elf_power::elf_power(QString name, int level, int experience, Attribute attr,
                      double up_hp, double up_atk, double up_def,
                      double up_atk_interval, double up_crit_rate, double up_agi)
     : elf_member(name, level, experience, attr, hp, atk, def, atk_interval, crit_rate, agi, up_hp, up_atk, up_def, up_atk_interval, up_crit_rate, up_agi)
-{
-
-}
-
-elf_tank::elf_tank(QString name, int level, int experience, Attribute attr)
-    : elf_member(name, level, experience, attr)
-{
-    HP *= 1.5;
-    DEF *= 1.5;
-    up_DEF = 1.5;
-    ATK_INTERVAL *= 0.5;
-}
-
-elf_tank::elf_tank(QString name, int level, int experience, Attribute attr,
-                   double atk, double up_atk, double hp, double up_hp, double atk_interval, double up_atk_interval)
-    : elf_member(name, level, experience, attr,
-                 hp, atk, INIT_DEF, atk_interval, INIT_CRIT_RATE * 0.5, INIT_AGI * 0, 
-                 up_hp, up_atk, INIT_UP_DEF, up_atk_interval, INIT_UP_CRIT_RATE, INIT_UP_AGI)
 {
 
 }
@@ -245,49 +282,12 @@ elf_tank::elf_tank(QString name, int level, int experience, Attribute attr,
 
 }
 
-elf_shield::elf_shield(QString name, int level, int experience, Attribute attr)
-    : elf_member(name, level, experience, attr)
-{
-    HP *= 1.2;
-    DEF *= 1.2;
-    up_DEF = 1.2;
-    ATK_INTERVAL *= 0.5;
-}
-
-elf_shield::elf_shield(QString name, int level, int experience, Attribute attr,
-                       double atk, double up_atk, double hp, double up_hp, double atk_interval, double up_atk_interval)
-    : elf_member(name, level, experience, attr,
-                 hp, atk, INIT_DEF, atk_interval, INIT_CRIT_RATE * 0.5, INIT_AGI * 0, 
-                 up_hp, up_atk, INIT_UP_DEF, up_atk_interval, INIT_UP_CRIT_RATE, INIT_UP_AGI)
-{
-
-}
-
 elf_shield::elf_shield(QString name, int level, int experience, Attribute attr,
                        double hp, double atk, double def, double atk_interval,
                        double crit_rate, double agi,
                        double up_hp, double up_atk, double up_def,
                        double up_atk_interval, double up_crit_rate, double up_agi)
     : elf_member(name, level, experience, attr, hp, atk, def, atk_interval, crit_rate, agi, up_hp, up_atk, up_def, up_atk_interval, up_crit_rate, up_agi)
-{
-
-}
-
-elf_speed::elf_speed(QString name, int level, int experience, Attribute attr)
-    : elf_member(name, level, experience, attr)
-{
-    HP *= 0.8;
-    DEF *= 0.8;
-    AGI *= 1.5;
-    up_AGI = 1.5;
-    ATK_INTERVAL *= 1.5;
-}
-
-elf_speed::elf_speed(QString name, int level, int experience, Attribute attr,
-                     double atk, double up_atk, double hp, double up_hp, double atk_interval, double up_atk_interval)
-    : elf_member(name, level, experience, attr,
-                 hp, atk, INIT_DEF, atk_interval, INIT_CRIT_RATE * 0.5, INIT_AGI * 0, 
-                 up_hp, up_atk, INIT_UP_DEF, up_atk_interval, INIT_UP_CRIT_RATE, INIT_UP_AGI)
 {
 
 }
@@ -301,3 +301,6 @@ elf_speed::elf_speed(QString name, int level, int experience, Attribute attr,
 {
 
 }
+
+
+

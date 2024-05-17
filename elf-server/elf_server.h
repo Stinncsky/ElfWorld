@@ -12,6 +12,8 @@ enum event{
     NEWELF,
     GET_USER_INFO,
     SEND_USER_INFO,
+    UPDATE_USER_ELF,
+    DELETE_USER_ELF,
     NO_EVENT
 };
 
@@ -44,6 +46,8 @@ private:
     void Send_user_info(const QString&);
 
     void add_user_elf(const QString&, const QString&);
+    void update_user_elf(const QString&, const int, const QString&);
+    void delete_user_elf(const QString&, const int);
 
     void login(const QString& username, const QString& password);
     void registerUser(const QString& username, const QString& password);
