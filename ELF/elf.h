@@ -114,6 +114,8 @@ private:
     void Solo();
     void Solo_over();
     void select_Skill(elf_member&);
+    void show_HPC(QVBoxLayout *, QString&);
+    QString extractNumbers(const QString &str);
     void user_win();
     void user_lose();
 

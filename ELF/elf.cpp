@@ -695,7 +695,10 @@ void Elf::Solo(){
     //普攻计时器
     firstTimer->setInterval(first->Fting_ATK_INTERVAL() * round_time);
     connect(firstTimer, &QTimer::timeout, this, [&, firstTimer]() {
-        ui->Battle_info->append("<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + first->normal_ATK(*second));
+        QString NATK_info = first->normal_ATK(*second);
+        QString num = "-" + extractNumbers(NATK_info);
+        show_HPC(ui->F_HPC, num);
+        ui->Battle_info->append("<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + NATK_info);
         firstTimer->setInterval(first->Fting_ATK_INTERVAL() * round_time); // 更新定时器的间隔
         ui->F_elf_HP->setValue(first->Fting_HP());
         ui->S_elf_HP->setValue(second->Fting_HP());
@@ -706,7 +709,10 @@ void Elf::Solo(){
 
     secondTimer->setInterval(second->Fting_ATK_INTERVAL() * round_time);
     connect(secondTimer, &QTimer::timeout, this, [&, secondTimer]() {
-        ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + second->normal_ATK(*first));
+        QString NATK_info = second->normal_ATK(*first);
+        QString num = "-" + extractNumbers(NATK_info);
+        show_HPC(ui->S_HPC, num);
+        ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + NATK_info);
         secondTimer->setInterval(second->Fting_ATK_INTERVAL() * round_time); // 更新定时器的间隔
         ui->F_elf_HP->setValue(first->Fting_HP());
         ui->S_elf_HP->setValue(second->Fting_HP());
@@ -725,6 +731,91 @@ void Elf::Solo(){
             QMetaObject::invokeMethod(timer, "timeout", Qt::DirectConnection);
             timer->start();
         }
+}
+
+void Elf::show_HPC(QVBoxLayout *layout, QString &C_info){
+    QLabel *label = new QLabel(C_info);
+
+    // 根据信息内容设置标签颜色，可以扩展为更复杂的逻辑
+    if (C_info.contains('-')) {
+        label->setStyleSheet("color: red;");
+    } else {
+        label->setStyleSheet("color: green;");
+    }
+
+    // 设置初始字体大小
+    QFont initialFont = label->font();
+    initialFont.setPointSize(12); // 初始字体大小
+    label->setFont(initialFont);
+
+    // 将 QLabel 添加到垂直布局中
+    layout->addWidget(label);
+
+    // 获取布局中心的位置
+    int layoutWidth = layout->geometry().width();
+    int layoutHeight = layout->geometry().height();
+    int centerX = layout->geometry().center().x();
+    int centerY = layout->geometry().center().y();
+
+    // 设置 QLabel 的初始位置和大小
+    label->resize(100, 40);
+    label->move(centerX - 50, centerY - 20);
+
+    // 创建一个透明度效果
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(label);
+    label->setGraphicsEffect(opacityEffect);
+
+    // 创建一个动画对象，设置属性为透明度变化
+    QPropertyAnimation *opacityAnimation = new QPropertyAnimation(opacityEffect, "opacity");
+    opacityAnimation->setDuration(1000); // 动画持续时间为 1 秒
+    opacityAnimation->setStartValue(0.0);
+    opacityAnimation->setEndValue(1.0);
+
+    // 创建一个动画对象，设置属性为几何变化
+    QPropertyAnimation *sizeAnimation = new QPropertyAnimation(label, "geometry");
+    QRect startRect(centerX - 50, centerY - 20, 100, 40); // 从初始矩形开始
+    QRect endRect(centerX - 50, centerY - 20, 150, 60); // 扩展到一个较大的矩形
+    sizeAnimation->setDuration(1000); // 动画持续时间为 1 秒
+    sizeAnimation->setStartValue(startRect);
+    sizeAnimation->setEndValue(endRect);
+
+    // 动画字体大小变化
+    QPropertyAnimation *fontAnimation = new QPropertyAnimation(label, "fontSize");
+    fontAnimation->setDuration(1000); // 动画持续时间为 1 秒
+    fontAnimation->setStartValue(12); // 初始字体大小
+    fontAnimation->setEndValue(20); // 最终字体大小
+
+    // 将动画绑定到 QLabel 的样式表变化上
+    connect(fontAnimation, &QPropertyAnimation::valueChanged, [label](const QVariant &value) {
+        int fontSize = value.toInt();
+        QFont font = label->font();
+        font.setPointSize(fontSize);
+        label->setFont(font);
+    });
+
+    // 设置动画完成后自动删除
+    connect(opacityAnimation, &QPropertyAnimation::finished, label, &QLabel::deleteLater);
+    connect(sizeAnimation, &QPropertyAnimation::finished, sizeAnimation, &QPropertyAnimation::deleteLater);
+    connect(fontAnimation, &QPropertyAnimation::finished, fontAnimation, &QPropertyAnimation::deleteLater);
+
+    // 启动动画
+    opacityAnimation->start();
+    sizeAnimation->start();
+    fontAnimation->start();
+
+    // 在动画结束后几秒后移除标签
+    QTimer::singleShot(1500, label, &QLabel::deleteLater);
+}
+QString Elf::extractNumbers(const QString &str) {
+    QRegularExpression re("-?\\d+"); // 匹配可选的负号和一个或多个数字
+    QRegularExpressionMatchIterator i = re.globalMatch(str);
+
+    QString result;
+    while (i.hasNext()) {
+        QRegularExpressionMatch match = i.next();
+        result = match.captured(0); // 获取匹配的数字
+    }
+    return result;
 }
 
 void Elf::Solo_over(){
