@@ -51,7 +51,7 @@ void Elf::init(){
         Buff("虚弱", 0, -5, 0, 0, 0, 0, MAX_BATTLE_TIME, 1),
         Buff("流血", -20, 0, -5, 0, 0, 0, 10, 1),
         Buff("强健", 0, 5, 0, 0, 0, 0, MAX_BATTLE_TIME, 1),
-        Buff("生机", 5, 0, 0, 0, 0, 0, MAX_BATTLE_TIME, 0),
+        Buff("生机", 5, 0, 0, 0, 0, 0, MAX_BATTLE_TIME, 1),
         Buff("缓慢", 0, 0, 0, -0.1, -0.1, 0, MAX_BATTLE_TIME, 1),
         Buff("凌空", 0, 0, 0, 0.1, 0, 0.1, MAX_BATTLE_TIME, 1),
         Buff("眩晕", 0, 0, 0, 0, 100, 0, 10, 1)
@@ -595,15 +595,24 @@ void Elf::Solo(){
     //首先初始化界面
     ui->Battle_info->clear();
     QPixmap pixmap(":/pic/" + Elfs_List[first->Elf_name()] +".png");
-    pixmap = pixmap.scaled(QSize(100, 100), Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // 缩放图片为 50x50
+    pixmap = pixmap.scaled(QSize(200, 200), Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // 缩放图片为 50x50
     ui->F_image->setPixmap(pixmap);
     ui->F_elf_HP->setMaximum(first->Hp());
     ui->F_elf_HP->setValue(first->Hp());
+    ui->F_level->setText(QString::number(first->Elf_level()));
+    ui->F_attr->setText(first->Elf_attr().Attr_name());
+    ui->F_ATK->setText(QString::number(first->Fting_ATK()));
+    ui->F_DEF->setText(QString::number(first->Fting_DEF()));
+    ui->F_AGI->setText(QString::number(first->Fting_AGI()));
+    ui->F_CR->setText(QString::number(first->Fting_CRIT_Rate()));
+    ui->F_AI->setText(QString::number(first->Fting_ATK_INTERVAL()));
     pixmap = QPixmap(":/pic/" + Elfs_List[second->Elf_name()] +".png");
-    pixmap = pixmap.scaled(QSize(100, 100), Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // 缩放图片为 50x50
+    pixmap = pixmap.scaled(QSize(200, 200), Qt::IgnoreAspectRatio, Qt::SmoothTransformation); // 缩放图片为 50x50
     ui->S_image->setPixmap(pixmap);
     ui->S_elf_HP->setMaximum(second->Hp());
     ui->S_elf_HP->setValue(second->Hp());
+    ui->S_level->setText(QString::number(second->Elf_level()));
+    ui->S_attr->setText(second->Elf_attr().Attr_name());
     //初始化倒计时时钟
     remainingTime = MAX_BATTLE_TIME;
     cur_min = remainingTime / 60; // 获取分钟数
@@ -631,7 +640,14 @@ void Elf::Solo(){
     second->start_battle();
     //获取技能列表
     const elf_skill *skills_1 = first->Elf_skills(), *skills_2 = second->Elf_skills();
-
+    set_Battle_skill_info(skills_1[0], ui->Battle_skill_dmg_1, ui->Battle_skill_attr_1, ui->Battle_skill_cd_1);
+    set_Battle_skill_info(skills_1[1], ui->Battle_skill_dmg_2, ui->Battle_skill_attr_2, ui->Battle_skill_cd_2);
+    set_Battle_skill_info(skills_1[2], ui->Battle_skill_dmg_3, ui->Battle_skill_attr_3, ui->Battle_skill_cd_3);
+    set_Battle_skill_info(skills_1[3], ui->Battle_skill_dmg_4, ui->Battle_skill_attr_4, ui->Battle_skill_cd_4);
+    set_Battle_skill(ui->Battle_skill_1, skills_1[0].SkillName(), skills_1[0].CD());
+    set_Battle_skill(ui->Battle_skill_2, skills_1[1].SkillName(), skills_1[1].CD());
+    set_Battle_skill(ui->Battle_skill_3, skills_1[2].SkillName(), skills_1[2].CD());
+    set_Battle_skill(ui->Battle_skill_4, skills_1[3].SkillName(), skills_1[3].CD());
     QTimer *buffTimer = new QTimer, *firstTimer = new QTimer, *secondTimer = new QTimer;
     Timers.append(timer);
     Timers.append(buffTimer);
@@ -644,10 +660,21 @@ void Elf::Solo(){
             skill_1->setInterval(skills_1[i].CD() * round_time);
             connect(skill_1, &QTimer::timeout, this, [&, i, skill_1, skills_1](){
                 // 处理技能的超时的代码
-                ui->Battle_info->append("<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + first->release_skill(*second, i));
+                QString SATK_info = first->release_skill(*second, i);
+                QString num = extractNumbers(SATK_info);
+                if (num.contains("-"))
+                    show_HPC(ui->S_HPC_show, num), shakeSprite(ui->S_image);
+                else if (num.contains("+"))
+                    show_HPC(ui->F_HPC_show, num), HealEffect(ui->F_image);
+                ui->Battle_info->append("<font color=\"#079B96\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font>" + SATK_info);
                 skill_1->setInterval(skills_1[i].CD() * round_time);
                 ui->F_elf_HP->setValue(first->Fting_HP());
                 ui->S_elf_HP->setValue(second->Fting_HP());
+                ui->F_ATK->setText(QString::number(first->Fting_ATK()));
+                ui->F_DEF->setText(QString::number(first->Fting_DEF()));
+                ui->F_AGI->setText(QString::number(first->Fting_AGI()));
+                ui->F_CR->setText(QString::number(first->Fting_CRIT_Rate()));
+                ui->F_AI->setText(QString::number(first->Fting_ATK_INTERVAL()));
                 if (first->Fting_HP() <= 0 || second->Fting_HP() <= 0){
                     Solo_over();
                 }
@@ -660,10 +687,21 @@ void Elf::Solo(){
             skill_2->setInterval(skills_2[i].CD() * round_time);
             connect(skill_2, &QTimer::timeout, this, [&, i, skill_2, skills_2](){
                 // 处理技能的超时的代码
-                ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + second->release_skill(*first, i));
+                QString SATK_info = second->release_skill(*first, i);
+                QString num = extractNumbers(SATK_info);
+                if (num.contains("-"))
+                    show_HPC(ui->F_HPC_show, num), shakeSprite(ui->F_image);
+                else
+                    show_HPC(ui->S_HPC_show, num), HealEffect(ui->S_image);
+                ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font>" + SATK_info);
                 skill_2->setInterval(skills_2[i].CD() * round_time);
                 ui->F_elf_HP->setValue(first->Fting_HP());
                 ui->S_elf_HP->setValue(second->Fting_HP());
+                ui->F_ATK->setText(QString::number(first->Fting_ATK()));
+                ui->F_DEF->setText(QString::number(first->Fting_DEF()));
+                ui->F_AGI->setText(QString::number(first->Fting_AGI()));
+                ui->F_CR->setText(QString::number(first->Fting_CRIT_Rate()));
+                ui->F_AI->setText(QString::number(first->Fting_ATK_INTERVAL()));
                 if (first->Fting_HP() <= 0 || second->Fting_HP() <= 0){
                     Solo_over();
                 }
@@ -674,31 +712,55 @@ void Elf::Solo(){
     //buff对生命值效果的计时器
     buffTimer->setInterval(round_time);
     connect(buffTimer, &QTimer::timeout, this, [&, buffTimer](){
-        QString info;
-        info = first->buff_to_HP();
-        if (info != ""){
-            info = "<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + first->Elf_name() + info;
+        QStringList infoList;
+
+        infoList = first->buff_to_HP();
+        if (!infoList.isEmpty()) {
+            QString info = "<font color=\"#079B96\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font> " + first->Elf_name();
+            for (const auto &line : infoList) {
+                info += line;
+                QString num = extractNumbers(line);
+                if (num.contains("-"))
+                    show_HPC(ui->S_HPC_show, num), shakeSprite(ui->S_image);
+                else if (num.contains("+"))
+                    show_HPC(ui->F_HPC_show, num), HealEffect(ui->F_image);
+            }
             ui->Battle_info->append(info);
         }
-        info = second->buff_to_HP();
-        if (info != ""){
-            info = "<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + second->Elf_name() + info;
+
+        infoList = second->buff_to_HP();
+        if (!infoList.isEmpty()) {
+            QString info = "<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font> " + second->Elf_name();
+            for (const auto &line : infoList) {
+                info += line;
+                QString num = extractNumbers(info);
+                if (num.contains("-"))
+                    show_HPC(ui->S_HPC_show, num), shakeSprite(ui->S_image);
+                else if (num.contains("+"))
+                    show_HPC(ui->F_HPC_show, num), HealEffect(ui->F_image);
+            }
             ui->Battle_info->append(info);
         }
+
         buffTimer->setInterval(round_time);
+
         ui->F_elf_HP->setValue(first->Fting_HP());
         ui->S_elf_HP->setValue(second->Fting_HP());
+
         if (first->Fting_HP() <= 0 || second->Fting_HP() <= 0){
             Solo_over();
         }
     });
+
     //普攻计时器
     firstTimer->setInterval(first->Fting_ATK_INTERVAL() * round_time);
     connect(firstTimer, &QTimer::timeout, this, [&, firstTimer]() {
         QString NATK_info = first->normal_ATK(*second);
-        QString num = "-" + extractNumbers(NATK_info);
-        show_HPC(ui->F_HPC, num);
-        ui->Battle_info->append("<font color=\"#30F6AD\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + NATK_info);
+        QString num = extractNumbers(NATK_info);
+        if (num.toDouble() < 0)
+            shakeSprite(ui->S_image);
+        show_HPC(ui->S_HPC_show, num);
+        ui->Battle_info->append("<font color=\"#079B96\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font>" + NATK_info);
         firstTimer->setInterval(first->Fting_ATK_INTERVAL() * round_time); // 更新定时器的间隔
         ui->F_elf_HP->setValue(first->Fting_HP());
         ui->S_elf_HP->setValue(second->Fting_HP());
@@ -710,9 +772,11 @@ void Elf::Solo(){
     secondTimer->setInterval(second->Fting_ATK_INTERVAL() * round_time);
     connect(secondTimer, &QTimer::timeout, this, [&, secondTimer]() {
         QString NATK_info = second->normal_ATK(*first);
-        QString num = "-" + extractNumbers(NATK_info);
-        show_HPC(ui->S_HPC, num);
-        ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec) + ']' + "</font>" + NATK_info);
+        QString num = extractNumbers(NATK_info);
+        if (num.toDouble() < 0)
+            shakeSprite(ui->F_image);
+        show_HPC(ui->F_HPC_show, num);
+        ui->Battle_info->append("<font color=\"#FC0750\">[" + QString::number(cur_min) + ':' + QString::number(cur_sec).rightJustified(2, '0') + ']' + "</font>" + NATK_info);
         secondTimer->setInterval(second->Fting_ATK_INTERVAL() * round_time); // 更新定时器的间隔
         ui->F_elf_HP->setValue(first->Fting_HP());
         ui->S_elf_HP->setValue(second->Fting_HP());
@@ -733,9 +797,60 @@ void Elf::Solo(){
         }
 }
 
-void Elf::show_HPC(QVBoxLayout *layout, QString &C_info){
-    QLabel *label = new QLabel(C_info);
+void Elf::set_Battle_skill_info(const elf_skill& skill, QLabel *dmg, QLabel *attr, QLabel *cd){
+    if (skill.SkillName() == ""){
+        dmg->setText("--");
+        attr->setText("--");
+        cd->setText("--");
+        return;
+    }
+    dmg->setText(QString::number(skill.DMG()));
+    attr->setText(skill.Attr().Attr_name());
+    cd->setText(QString::number(skill.CD()));
+}
 
+void Elf::set_Battle_skill(QGroupBox *skill,const QString& name, const int cd){
+    if (name == ""){
+        skill->setTitle("--");
+        return;
+    }
+    skill->setTitle(name);
+    startCooldown(skill, cd);
+}
+
+void Elf::startCooldown(QGroupBox* skillGroupBox, const int cooldownTime) {
+    // 创建一个透明度效果
+    QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(skillGroupBox);
+    skillGroupBox->setGraphicsEffect(opacityEffect);
+
+    // 创建一个动画来改变透明度
+    QPropertyAnimation *animation = new QPropertyAnimation(opacityEffect, "opacity");
+    animation->setDuration(0.5 * round_time); // 动画持续时间
+    animation->setStartValue(1.0);
+    animation->setEndValue(0.5); // 设置为 0.5 以变暗
+
+    animation->start(QAbstractAnimation::DeleteWhenStopped);
+
+    // 在冷却结束时恢复透明度
+    QTimer::singleShot(cooldownTime, [this, skillGroupBox, opacityEffect]() {
+        QPropertyAnimation *resetAnimation = new QPropertyAnimation(opacityEffect, "opacity");
+        resetAnimation->setDuration(0.5 * round_time); // 恢复动画持续时间
+        resetAnimation->setStartValue(0.5);
+        resetAnimation->setEndValue(1.0); // 恢复为原透明度
+
+        resetAnimation->start(QAbstractAnimation::DeleteWhenStopped);
+
+        connect(resetAnimation, &QPropertyAnimation::finished, [skillGroupBox]() {
+            skillGroupBox->setGraphicsEffect(nullptr); // 移除透明度效果
+        });
+    });
+}
+
+void Elf::show_HPC(QFrame *frame, QString &C_info){
+    if (C_info.isEmpty())
+        return;
+    QLabel *label = new QLabel(C_info, frame);
+    //label->setAlignment(Qt::AlignCenter);
     // 根据信息内容设置标签颜色，可以扩展为更复杂的逻辑
     if (C_info.contains('-')) {
         label->setStyleSheet("color: red;");
@@ -743,71 +858,58 @@ void Elf::show_HPC(QVBoxLayout *layout, QString &C_info){
         label->setStyleSheet("color: green;");
     }
 
-    // 设置初始字体大小
+    label->show();
     QFont initialFont = label->font();
-    initialFont.setPointSize(12); // 初始字体大小
+    initialFont.setPointSize(10);
     label->setFont(initialFont);
 
-    // 将 QLabel 添加到垂直布局中
-    layout->addWidget(label);
-
-    // 获取布局中心的位置
-    int layoutWidth = layout->geometry().width();
-    int layoutHeight = layout->geometry().height();
-    int centerX = layout->geometry().center().x();
-    int centerY = layout->geometry().center().y();
-
-    // 设置 QLabel 的初始位置和大小
-    label->resize(100, 40);
-    label->move(centerX - 50, centerY - 20);
-
-    // 创建一个透明度效果
+    // 随机设置标签的位置，防止重叠
+    int xPos = 130 + rand() % 50;
+    int yPos = 30 ;
+    label->resize(120, 20);
+    label->move(xPos, yPos);
+    qDebug() << label->geometry().x() << label->geometry().y();
     QGraphicsOpacityEffect *opacityEffect = new QGraphicsOpacityEffect(label);
     label->setGraphicsEffect(opacityEffect);
 
-    // 创建一个动画对象，设置属性为透明度变化
+    QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup(this);
+
     QPropertyAnimation *opacityAnimation = new QPropertyAnimation(opacityEffect, "opacity");
-    opacityAnimation->setDuration(1000); // 动画持续时间为 1 秒
-    opacityAnimation->setStartValue(0.0);
-    opacityAnimation->setEndValue(1.0);
+    opacityAnimation->setDuration(1000);
+    opacityAnimation->setStartValue(1.0);
+    opacityAnimation->setEndValue(0.0);
+    animationGroup->addAnimation(opacityAnimation);
 
-    // 创建一个动画对象，设置属性为几何变化
-    QPropertyAnimation *sizeAnimation = new QPropertyAnimation(label, "geometry");
-    QRect startRect(centerX - 50, centerY - 20, 100, 40); // 从初始矩形开始
-    QRect endRect(centerX - 50, centerY - 20, 150, 60); // 扩展到一个较大的矩形
-    sizeAnimation->setDuration(1000); // 动画持续时间为 1 秒
-    sizeAnimation->setStartValue(startRect);
-    sizeAnimation->setEndValue(endRect);
+    QPropertyAnimation *moveAnimation = new QPropertyAnimation(label, "pos");
+    moveAnimation->setDuration(1000);
+    moveAnimation->setStartValue(QPoint(xPos, yPos));
+    moveAnimation->setEndValue(QPoint(xPos, yPos - 20));
+    animationGroup->addAnimation(moveAnimation);
 
-    // 动画字体大小变化
-    QPropertyAnimation *fontAnimation = new QPropertyAnimation(label, "fontSize");
-    fontAnimation->setDuration(1000); // 动画持续时间为 1 秒
-    fontAnimation->setStartValue(12); // 初始字体大小
-    fontAnimation->setEndValue(20); // 最终字体大小
+    QPropertyAnimation *fontAnimation = new QPropertyAnimation(label, "geometry");
+    fontAnimation->setDuration(1000);
+    fontAnimation->setStartValue(QRect(xPos, yPos, 120, 20));
+    fontAnimation->setEndValue(QRect(xPos, yPos - 30, 140, 50));
 
-    // 将动画绑定到 QLabel 的样式表变化上
-    connect(fontAnimation, &QPropertyAnimation::valueChanged, [label](const QVariant &value) {
-        int fontSize = value.toInt();
-        QFont font = label->font();
-        font.setPointSize(fontSize);
-        label->setFont(font);
+    connect(fontAnimation, &QPropertyAnimation::valueChanged, [label, initialFont](const QVariant &value) mutable {
+        QRect rect = value.toRect();
+        int newSize = 12 + (10 * (1.0 - static_cast<double>(rect.x()-130) / 50.0));
+        if (newSize > 0) {
+            QFont font = label->font();
+            font.setPointSize(newSize);
+            label->setFont(font);
+        }
     });
+    animationGroup->addAnimation(fontAnimation);
 
-    // 设置动画完成后自动删除
-    connect(opacityAnimation, &QPropertyAnimation::finished, label, &QLabel::deleteLater);
-    connect(sizeAnimation, &QPropertyAnimation::finished, sizeAnimation, &QPropertyAnimation::deleteLater);
-    connect(fontAnimation, &QPropertyAnimation::finished, fontAnimation, &QPropertyAnimation::deleteLater);
+    connect(animationGroup, &QParallelAnimationGroup::finished, label, &QLabel::deleteLater);
+    connect(animationGroup, &QParallelAnimationGroup::finished, animationGroup, &QParallelAnimationGroup::deleteLater);
 
-    // 启动动画
-    opacityAnimation->start();
-    sizeAnimation->start();
-    fontAnimation->start();
-
-    // 在动画结束后几秒后移除标签
-    QTimer::singleShot(1500, label, &QLabel::deleteLater);
+    animationGroup->start();
 }
+
 QString Elf::extractNumbers(const QString &str) {
-    QRegularExpression re("-?\\d+"); // 匹配可选的负号和一个或多个数字
+    QRegularExpression re("[+-]?\\d+(\\.\\d+)?"); // 匹配可选的正号或负号，一个或多个数字，可选的小数点和数字
     QRegularExpressionMatchIterator i = re.globalMatch(str);
 
     QString result;
@@ -816,6 +918,109 @@ QString Elf::extractNumbers(const QString &str) {
         result = match.captured(0); // 获取匹配的数字
     }
     return result;
+}
+
+void Elf::shakeSprite(QLabel *spriteLabel) {
+    const int duration = 0.5 * round_time; // 动画持续时间
+    const int amplitude = 5; // 抖动幅度
+
+    QGraphicsColorizeEffect *colorEffect = new QGraphicsColorizeEffect(spriteLabel);
+    spriteLabel->setGraphicsEffect(colorEffect);
+
+    QPropertyAnimation *colorAnimation = new QPropertyAnimation(colorEffect, "color");
+    colorAnimation->setDuration(duration); // 动画持续时间
+    colorAnimation->setKeyValueAt(0, QColor(Qt::transparent));
+    colorAnimation->setKeyValueAt(0.25, QColor("#FF0000"));
+    colorAnimation->setKeyValueAt(0.5, QColor(Qt::transparent));
+
+    QPropertyAnimation *intensityAnimation = new QPropertyAnimation(colorEffect, "strength");
+    intensityAnimation->setDuration(duration);
+    intensityAnimation->setStartValue(0.0);
+    intensityAnimation->setKeyValueAt(0.5, 1.0);
+    intensityAnimation->setEndValue(0.0);
+
+
+    QPropertyAnimation *shakeAnimation = new QPropertyAnimation(spriteLabel, "pos");
+    shakeAnimation->setDuration(duration);
+
+    // 设置抖动的关键帧
+    shakeAnimation->setKeyValueAt(0, spriteLabel->pos());
+    shakeAnimation->setKeyValueAt(0.1, spriteLabel->pos() + QPoint(-amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.2, spriteLabel->pos() + QPoint(amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.3, spriteLabel->pos() + QPoint(-amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.4, spriteLabel->pos() + QPoint(amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.5, spriteLabel->pos() + QPoint(-amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.6, spriteLabel->pos() + QPoint(amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.7, spriteLabel->pos() + QPoint(-amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.8, spriteLabel->pos() + QPoint(amplitude, 0));
+    shakeAnimation->setKeyValueAt(0.9, spriteLabel->pos() + QPoint(-amplitude, 0));
+    shakeAnimation->setKeyValueAt(1.0, spriteLabel->pos());
+
+    QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup(spriteLabel);
+    animationGroup->addAnimation(colorAnimation);
+    animationGroup->addAnimation(intensityAnimation);
+    animationGroup->addAnimation(shakeAnimation);
+
+    // 在动画完成后移除 colorEffect
+    QObject::connect(animationGroup, &QParallelAnimationGroup::finished, [spriteLabel, colorEffect]() {
+        spriteLabel->setGraphicsEffect(nullptr);
+        //colorEffect->deleteLater();
+    });
+    // 启动动画组
+    animationGroup->start(QAbstractAnimation::DeleteWhenStopped); // 动画结束后删除
+}
+
+void Elf::HealEffect(QLabel *spriteLabel) {
+    // 创建绿色光圈
+    QLabel *greenCircle = new QLabel(spriteLabel);
+    greenCircle->resize(100, 100);
+    greenCircle->setStyleSheet("background-color: rgba(0, 255, 0, 100); border-radius: 75px;");
+    greenCircle->move(spriteLabel->width() / 2 - greenCircle->width() / 2, spriteLabel->height() / 2 - greenCircle->height() / 2);
+    greenCircle->show();
+    QPropertyAnimation *circleAnimation = new QPropertyAnimation(greenCircle, "geometry");
+    circleAnimation->setDuration(1000); // 动画持续时间
+    circleAnimation->setStartValue(QRect(greenCircle->pos(), QSize(100, 100)));
+    circleAnimation->setEndValue(QRect(greenCircle->pos(), QSize(150, 150))); // 放大光圈
+
+    // 创建向上的小光柱
+    /*QLabel *lightBeam = new QLabel(spriteLabel);
+    lightBeam->resize(20, 100);
+    lightBeam->setStyleSheet("background-color: rgba(0, 255, 0, 150);");
+    lightBeam->move(spriteLabel->width() / 2 - lightBeam->width() / 2, spriteLabel->height() / 2);
+    lightBeam->show();
+    QPropertyAnimation *beamAnimation = new QPropertyAnimation(lightBeam, "geometry");
+    beamAnimation->setDuration(1000); // 动画持续时间
+    beamAnimation->setStartValue(QRect(lightBeam->pos(), lightBeam->size()));
+    beamAnimation->setEndValue(QRect(lightBeam->pos().x(), lightBeam->pos().y() - 50, 20, 150)); // 向上延伸光柱*/
+
+    // 创建透明度动画使光圈和光柱消失
+    QGraphicsOpacityEffect *circleOpacityEffect = new QGraphicsOpacityEffect(greenCircle);
+    greenCircle->setGraphicsEffect(circleOpacityEffect);
+    QPropertyAnimation *circleOpacityAnimation = new QPropertyAnimation(circleOpacityEffect, "opacity");
+    circleOpacityAnimation->setDuration(1000); // 动画持续时间
+    circleOpacityAnimation->setStartValue(1.0);
+    circleOpacityAnimation->setEndValue(0.0);
+
+    /*QGraphicsOpacityEffect *beamOpacityEffect = new QGraphicsOpacityEffect(lightBeam);
+    lightBeam->setGraphicsEffect(beamOpacityEffect);
+    QPropertyAnimation *beamOpacityAnimation = new QPropertyAnimation(beamOpacityEffect, "opacity");
+    beamOpacityAnimation->setDuration(1000); // 动画持续时间
+    beamOpacityAnimation->setStartValue(1.0);
+    beamOpacityAnimation->setEndValue(0.0);*/
+
+    // 创建动画组
+    QParallelAnimationGroup *animationGroup = new QParallelAnimationGroup(spriteLabel);
+    animationGroup->addAnimation(circleAnimation);
+    //animationGroup->addAnimation(beamAnimation);
+    animationGroup->addAnimation(circleOpacityAnimation);
+    //animationGroup->addAnimation(beamOpacityAnimation);
+
+    // 在动画完成后移除光圈和光柱
+    connect(animationGroup, &QParallelAnimationGroup::finished, greenCircle, &QLabel::deleteLater);
+    //connect(animationGroup, &QParallelAnimationGroup::finished, lightBeam, &QLabel::deleteLater);
+
+    // 启动动画组
+    animationGroup->start(QAbstractAnimation::DeleteWhenStopped); // 动画结束后删除
 }
 
 void Elf::Solo_over(){
@@ -1004,5 +1209,17 @@ void Elf::on_Delete_elf_clicked()
     delete_user_elf(All_Elfs[selected_elf].elf_id);
     qDebug() << selected_elf;
     display_ALLELF();
+}
+
+
+void Elf::on_SET_first_clicked()
+{
+    int tmp = My_Bag[0];
+    My_Bag[0] = selected_elf;
+    for (int i = 1; i < 6; i++){
+        if (My_Bag[i] == selected_elf){
+            My_Bag[i] = tmp;
+        }
+    }
 }
 

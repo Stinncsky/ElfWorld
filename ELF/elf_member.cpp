@@ -125,13 +125,16 @@ void elf_member::add_skill(const elf_skill& skill){
 }
 
 QString elf_member::normal_ATK(elf_member &enemy){
+    QString info = elf_name + "造成了";
     double ATK = fting_ATK, E_DEF = enemy.fting_DEF;
     auto attr = attributeRelations.find({elf_attr, enemy.elf_attr});
     if (attr != attributeRelations.end()) {
         if (attr->second == AttributeRelationship::STRONG) {
             ATK *= 1.3;
+            info += "<font color=\"#CE330D\">(强效)</font>";
         } else if (attr->second == AttributeRelationship::WEAK) {
             ATK *= 0.85;
+            info += "<font color=\"#8E7D79\">(弱效)</font>";
         }
     }
     double DMG = ATK-E_DEF;
@@ -142,9 +145,9 @@ QString elf_member::normal_ATK(elf_member &enemy){
     if (!getProbabilityResult(enemy.fting_AGI)){
         enemy.fting_HP -= DMG;
         enemy.fting_HP = std::max(enemy.fting_HP, 0.0);
-        return elf_name + "对" + enemy.Elf_name() + "造成了" + "<font color=\"#800000\">" + QString::number(DMG) + "</font>" + "伤害";
+        return info + "<font color=\"#800000\">-" + QString::number(DMG) + "</font>" + "伤害";
     } else {
-        return enemy.elf_name + "用矫健的步伐闪过了这次攻击！";
+        return "敌方用矫健的步伐闪过了" + elf_name + "的攻击！";
     }
 }
 
@@ -174,6 +177,7 @@ void elf_member::start_battle(){
     fting_CRIT_Rate = CRIT_Rate;
     fting_AGI = AGI;
     elf_state.clear();
+    state_HP.clear();
 }
 
 QString elf_member::skill_effect(const elf_skill skill, const double ATK, const bool tgt){
@@ -184,13 +188,15 @@ QString elf_member::skill_effect(const elf_skill skill, const double ATK, const 
         if (attr != attributeRelations.end()) {
             if (attr->second == AttributeRelationship::STRONG) {
                 DMG *= 1.6;
+                info += "<font color=\"#CE330D\">(强效)</font>";
             } else if (attr->second == AttributeRelationship::WEAK) {
                 DMG *= 0.67;
+                info += "<font color=\"#8E7D79\">(弱效)</font>";
             }
         }
         fting_HP -= DMG;
         fting_HP = std::max(fting_HP, 0.0);
-        info += elf_name + "造成了" + "<font color=\"#800000\">" + QString::number(DMG) + "</font>" + "的伤害!";
+        info += "造成了<font color=\"#800000\">-" + QString::number(DMG) + "</font>" + "的伤害!";
     }
     if (!skill.Rate_Result())
         return info;
@@ -240,25 +246,25 @@ void elf_member::buff_erase(const Buff buff){
     fting_CRIT_Rate = std::max(fting_CRIT_Rate - buff.Crit(), 0.0);
 }
 
-QString elf_member::buff_to_HP(){
-    QString info;
-    for (auto &i : state_HP) {
+QStringList elf_member::buff_to_HP() {
+    QStringList info;
+    for (const auto &i : state_HP) {
         fting_HP += i.first;
         if (i.first > 0) {
-            info += "<font color=\"#1788C0\">" +i.second + "</font>" + "回复了<font color=\"#17C082\">" + QString::number(i.first) + "</font>" + "生命值。\n";
+            info += "<font color=\"#1788C0\">" + i.second + "</font>" + "回复了<font color=\"#17C082\">+" + QString::number(i.first) + "</font>" + "生命值。\n";
         } else {
-            info += "<font color=\"#1788C0\">" +i.second + "</font>" + "扣除了<font color=\"#800000\">" + QString::number(i.first) + "</font>" + "生命值。\n";
+            info += "<font color=\"#1788C0\">" + i.second + "</font>" + "扣除了<font color=\"#800000\">-" + QString::number(i.first) + "</font>" + "生命值。\n";
         }
     }
     fting_HP = std::max(fting_HP, 0.0);
     return info;
 }
-
 QString elf_member::release_skill(elf_member &enemy, int sid){
+    QString info = elf_name + "释放了" +"<font color=\"#8148CB\">" +elf_skills[sid].SkillName() + "</font>,";
     if(elf_skills[sid].TGT()){
-        return enemy.skill_effect(elf_skills[sid], ATK, 1);
+        return info + enemy.skill_effect(elf_skills[sid], ATK, 1);
     } else {
-        return skill_effect(elf_skills[sid], ATK, 0);
+        return info + skill_effect(elf_skills[sid], ATK, 0);
     }
 }
 

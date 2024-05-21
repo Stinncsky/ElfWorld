@@ -1,6 +1,7 @@
 #ifndef ELF_H
 #define ELF_H
 
+#include "qgroupbox.h"
 #include "qtableview.h"
 #include <QWidget>
 #include <QTcpSocket>
@@ -9,13 +10,14 @@
 #include <QStandardItemModel>
 #include <QGraphicsItemAnimation>
 #include <QGraphicsOpacityEffect>
+#include <QParallelAnimationGroup>
 #include <QTimer>
 #include <elf_member.h>
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QRandomGenerator>
 #include <QPainter>
-#include <QPainterPath>>
+#include <QPainterPath>
 
 enum event{
     LOGIN,
@@ -75,6 +77,8 @@ private slots:
 
     void on_Delete_elf_clicked();
 
+    void on_SET_first_clicked();
+
 private:
     Ui::Elf *ui;
     QString cur_user;
@@ -114,8 +118,13 @@ private:
     void Solo();
     void Solo_over();
     void select_Skill(elf_member&);
-    void show_HPC(QVBoxLayout *, QString&);
-    QString extractNumbers(const QString &str);
+    void set_Battle_skill_info(const elf_skill&, QLabel *, QLabel *, QLabel *);
+    void set_Battle_skill(QGroupBox *,const QString&, const int);
+    void show_HPC(QFrame *, QString&);
+    void startCooldown(QGroupBox* skillGroupBox, const int cooldownTime);
+    QString extractNumbers(const QString &str);//获取伤害信息的数字
+    void shakeSprite(QLabel *);//受伤抖动
+    void HealEffect(QLabel *);
     void user_win();
     void user_lose();
 

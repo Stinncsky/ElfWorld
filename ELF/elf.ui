@@ -330,7 +330,7 @@
              </sizepolicy>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab">
              <attribute name="title">
@@ -883,7 +883,7 @@
                      <double>0.500000000000000</double>
                     </property>
                     <property name="maximum">
-                     <double>1000.000000000000000</double>
+                     <double>20.000000000000000</double>
                     </property>
                     <property name="value">
                      <double>1.000000000000000</double>
@@ -1078,8 +1078,15 @@
                        </spacer>
                       </item>
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_8">
-                        <item>
+                       <layout class="QGridLayout" name="gridLayout_20">
+                        <item row="1" column="1">
+                         <widget class="QPushButton" name="Delete_elf">
+                          <property name="text">
+                           <string>放生</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
                          <spacer name="horizontalSpacer_12">
                           <property name="orientation">
                            <enum>Qt::Horizontal</enum>
@@ -1092,10 +1099,10 @@
                           </property>
                          </spacer>
                         </item>
-                        <item>
-                         <widget class="QPushButton" name="Delete_elf">
+                        <item row="0" column="1">
+                         <widget class="QPushButton" name="SET_first">
                           <property name="text">
-                           <string>放生</string>
+                           <string>设为首发</string>
                           </property>
                          </widget>
                         </item>
@@ -1773,12 +1780,21 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QFrame" name="frame">
+        <widget class="QFrame" name="Battle_frame">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame#Battle_frame {
+	
+	background-image: url(:/pic/battle (2).jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* 使图片适应窗口大小 */
+}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
@@ -1786,7 +1802,7 @@
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <layout class="QGridLayout" name="gridLayout_17">
+         <layout class="QGridLayout" name="gridLayout_19" rowstretch="5,2">
           <property name="leftMargin">
            <number>5</number>
           </property>
@@ -1800,218 +1816,141 @@
            <number>5</number>
           </property>
           <item row="0" column="0">
-           <layout class="QVBoxLayout" name="verticalLayout_28" stretch="5,2">
+           <layout class="QHBoxLayout" name="horizontalLayout_42" stretch="1,12,1">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_42" stretch="1,10,1">
+             <spacer name="horizontalSpacer_29">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_27" stretch="2,5">
               <item>
-               <spacer name="horizontalSpacer_29">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_27" stretch="2,5">
-                <item>
-                 <layout class="QGridLayout" name="gridLayout_16" rowstretch="3,2">
-                  <item row="0" column="0">
-                   <layout class="QVBoxLayout" name="verticalLayout_26">
-                    <item>
-                     <widget class="QProgressBar" name="S_elf_HP">
-                      <property name="maximum">
-                       <number>500</number>
-                      </property>
-                      <property name="value">
-                       <number>45</number>
-                      </property>
-                      <property name="format">
-                       <string>%v/%m</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_88">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_83">
-                        <item>
-                         <widget class="QLabel" name="label_61">
-                          <property name="text">
-                           <string>LV：</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_62">
-                          <property name="text">
-                           <string>TextLabel</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <spacer name="horizontalSpacer_24">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_84">
-                        <item>
-                         <widget class="QLabel" name="label_63">
-                          <property name="text">
-                           <string>属性：</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_64">
-                          <property name="text">
-                           <string>TextLabel</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="0" column="1">
-                   <layout class="QHBoxLayout" name="horizontalLayout_70" stretch="1,1,1">
-                    <item>
-                     <spacer name="horizontalSpacer_18">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                    <item>
-                     <widget class="QLCDNumber" name="Time_clock">
-                      <property name="digitCount">
-                       <number>5</number>
-                      </property>
-                      <property name="value" stdset="0">
-                       <double>66.000000000000000</double>
-                      </property>
-                      <property name="intValue" stdset="0">
-                       <number>66</number>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <spacer name="horizontalSpacer_19">
-                      <property name="orientation">
-                       <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                       <size>
-                        <width>40</width>
-                        <height>20</height>
-                       </size>
-                      </property>
-                     </spacer>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="0" column="2">
-                   <layout class="QVBoxLayout" name="verticalLayout_17">
-                    <item>
-                     <widget class="QProgressBar" name="F_elf_HP">
-                      <property name="maximum">
-                       <number>500</number>
-                      </property>
-                      <property name="value">
-                       <number>45</number>
-                      </property>
-                      <property name="format">
-                       <string>%v/%m</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <layout class="QHBoxLayout" name="horizontalLayout_38">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_71">
-                        <item>
-                         <widget class="QLabel" name="label_16">
-                          <property name="text">
-                           <string>LV：</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_17">
-                          <property name="text">
-                           <string>TextLabel</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                      <item>
-                       <spacer name="horizontalSpacer_25">
-                        <property name="orientation">
-                         <enum>Qt::Horizontal</enum>
-                        </property>
-                        <property name="sizeHint" stdset="0">
-                         <size>
-                          <width>40</width>
-                          <height>20</height>
-                         </size>
-                        </property>
-                       </spacer>
-                      </item>
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_74">
-                        <item>
-                         <widget class="QLabel" name="label_43">
-                          <property name="text">
-                           <string>属性：</string>
-                          </property>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QLabel" name="label_44">
-                          <property name="text">
-                           <string>TextLabel</string>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
-                      </item>
-                     </layout>
-                    </item>
-                   </layout>
-                  </item>
-                  <item row="1" column="0">
-                   <widget class="QGroupBox" name="S_state">
-                    <property name="title">
-                     <string>GroupBox</string>
+               <layout class="QGridLayout" name="gridLayout_16" rowstretch="3,2">
+                <item row="0" column="0">
+                 <layout class="QVBoxLayout" name="verticalLayout_26">
+                  <item>
+                   <widget class="QProgressBar" name="S_elf_HP">
+                    <property name="styleSheet">
+                     <string notr="true">QProgressBar{
+border: 2px solid grey;
+border-radius: 5px;
+text-align: center;
+background: #E0E0E0;
+}
+QProgressBar::chunk{
+background:rgb(48, 255, 79);
+border-radius: 5px;
+}</string>
+                    </property>
+                    <property name="maximum">
+                     <number>500</number>
+                    </property>
+                    <property name="value">
+                     <number>45</number>
+                    </property>
+                    <property name="format">
+                     <string>%v/%m</string>
                     </property>
                    </widget>
                   </item>
-                  <item row="1" column="1">
-                   <spacer name="horizontalSpacer_26">
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_88">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_83">
+                      <item>
+                       <widget class="QLabel" name="label_61">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>LV：</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="S_level">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_84">
+                      <item>
+                       <widget class="QLabel" name="label_63">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>属性：</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="S_attr">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item row="0" column="1">
+                 <layout class="QHBoxLayout" name="horizontalLayout_70" stretch="1,1,1">
+                  <item>
+                   <spacer name="horizontalSpacer_18">
                     <property name="orientation">
                      <enum>Qt::Horizontal</enum>
                     </property>
@@ -2023,104 +1962,454 @@
                     </property>
                    </spacer>
                   </item>
-                  <item row="1" column="2">
-                   <widget class="QGroupBox" name="F_state">
-                    <property name="title">
-                     <string>GroupBox</string>
+                  <item>
+                   <widget class="QLCDNumber" name="Time_clock">
+                    <property name="digitCount">
+                     <number>5</number>
+                    </property>
+                    <property name="value" stdset="0">
+                     <double>66.000000000000000</double>
+                    </property>
+                    <property name="intValue" stdset="0">
+                     <number>66</number>
                     </property>
                    </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer_19">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>40</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </item>
+                <item row="0" column="2">
+                 <layout class="QVBoxLayout" name="verticalLayout_17">
+                  <item>
+                   <widget class="QProgressBar" name="F_elf_HP">
+                    <property name="styleSheet">
+                     <string notr="true">QProgressBar{
+border: 2px solid grey;
+border-radius: 5px;
+text-align: center;
+background: #E0E0E0;
+}
+QProgressBar::chunk{
+background:rgb(48, 255, 79);
+border-radius: 5px;
+}</string>
+                    </property>
+                    <property name="maximum">
+                     <number>500</number>
+                    </property>
+                    <property name="value">
+                     <number>45</number>
+                    </property>
+                    <property name="format">
+                     <string>%v/%m</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_38">
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_71">
+                      <item>
+                       <widget class="QLabel" name="label_16">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>LV：</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="F_level">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_74">
+                      <item>
+                       <widget class="QLabel" name="label_43">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>属性：</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="F_attr">
+                        <property name="font">
+                         <font>
+                          <pointsize>14</pointsize>
+                         </font>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>TextLabel</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QGroupBox" name="S_state">
+                  <property name="title">
+                   <string>GroupBox</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <spacer name="horizontalSpacer_26">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QGroupBox" name="F_state">
+                  <property name="title">
+                   <string>GroupBox</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_40" stretch="1,1,1">
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_18" stretch="1,5">
+                  <item>
+                   <layout class="QVBoxLayout" name="S_HPC">
+                    <item>
+                     <widget class="QFrame" name="S_HPC_show">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <widget class="QLabel" name="label_20">
+                       <property name="geometry">
+                        <rect>
+                         <x>70</x>
+                         <y>120</y>
+                         <width>69</width>
+                         <height>19</height>
+                        </rect>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <pointsize>10</pointsize>
+                        </font>
+                       </property>
+                       <property name="text">
+                        <string>-50</string>
+                       </property>
+                      </widget>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                  <item>
+                   <layout class="QGridLayout" name="gridLayout_17">
+                    <item row="0" column="0">
+                     <spacer name="horizontalSpacer_31">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="S_image">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>200</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>5555</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <spacer name="horizontalSpacer_32">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="1" column="1">
+                     <spacer name="verticalSpacer_24">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_40" stretch="3,1,2,1,3">
+                 <widget class="QLabel" name="label_18">
+                  <property name="font">
+                   <font>
+                    <pointsize>48</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>VS</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QVBoxLayout" name="verticalLayout_19" stretch="1,5">
                   <item>
-                   <widget class="QLabel" name="S_image">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>5555</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
+                   <layout class="QVBoxLayout" name="F_HPC">
+                    <item>
+                     <widget class="QFrame" name="F_HPC_show">
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                   <item>
-                   <layout class="QVBoxLayout" name="S_HPC"/>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_18">
-                    <property name="font">
-                     <font>
-                      <pointsize>20</pointsize>
-                     </font>
-                    </property>
-                    <property name="text">
-                     <string>TextLabel</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <layout class="QVBoxLayout" name="F_HPC"/>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="F_image">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
-                    </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>0</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>TextLabel</string>
-                    </property>
-                    <property name="alignment">
-                     <set>Qt::AlignCenter</set>
-                    </property>
-                   </widget>
+                   <layout class="QGridLayout" name="gridLayout_18">
+                    <item row="0" column="0">
+                     <spacer name="horizontalSpacer_33">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="0" column="1">
+                     <widget class="QLabel" name="F_image">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>200</width>
+                        <height>200</height>
+                       </size>
+                      </property>
+                      <property name="text">
+                       <string>TextLabel</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="2">
+                     <spacer name="horizontalSpacer_34">
+                      <property name="orientation">
+                       <enum>Qt::Horizontal</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>40</width>
+                        <height>20</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                    <item row="1" column="1">
+                     <spacer name="verticalSpacer_25">
+                      <property name="orientation">
+                       <enum>Qt::Vertical</enum>
+                      </property>
+                      <property name="sizeHint" stdset="0">
+                       <size>
+                        <width>20</width>
+                        <height>40</height>
+                       </size>
+                      </property>
+                     </spacer>
+                    </item>
+                   </layout>
                   </item>
                  </layout>
                 </item>
                </layout>
               </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_30">
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_30">
+               <widget class="QPushButton" name="Battle_escape">
+                <property name="text">
+                 <string>溜了</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="Battle_exit">
+                <property name="text">
+                 <string>退出</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_32">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_20">
                 <item>
-                 <widget class="QPushButton" name="Battle_escape">
-                  <property name="text">
-                   <string>溜了</string>
-                  </property>
-                 </widget>
+                 <layout class="QHBoxLayout" name="horizontalLayout_85">
+                  <item>
+                   <widget class="QLabel" name="label_65">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>攻击力：</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="F_ATK">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="Battle_exit">
-                  <property name="text">
-                   <string>退出</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="verticalSpacer_32">
+                 <spacer name="verticalSpacer_26">
                   <property name="orientation">
                    <enum>Qt::Vertical</enum>
                   </property>
@@ -2133,501 +2422,968 @@
                  </spacer>
                 </item>
                 <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_20">
+                 <layout class="QHBoxLayout" name="horizontalLayout_86">
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_85">
-                    <item>
-                     <widget class="QLabel" name="label_65">
-                      <property name="text">
-                       <string>攻击力：</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_66">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QLabel" name="label_67">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>防御力：</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_86">
-                    <item>
-                     <widget class="QLabel" name="label_67">
-                      <property name="text">
-                       <string>防御力：</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_68">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QLabel" name="F_DEF">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_27">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_87">
+                  <item>
+                   <widget class="QLabel" name="label_69">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>闪避率：</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_87">
-                    <item>
-                     <widget class="QLabel" name="label_69">
-                      <property name="text">
-                       <string>闪避率：</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_70">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QLabel" name="F_AGI">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_28">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_89">
+                  <item>
+                   <widget class="QLabel" name="label_71">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>暴击率：</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_89">
-                    <item>
-                     <widget class="QLabel" name="label_71">
-                      <property name="text">
-                       <string>暴击率：</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_72">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QLabel" name="F_CR">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <spacer name="verticalSpacer_29">
+                  <property name="orientation">
+                   <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>20</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_90">
+                  <item>
+                   <widget class="QLabel" name="label_73">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>攻击间隔：</string>
+                    </property>
+                   </widget>
                   </item>
                   <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_90">
-                    <item>
-                     <widget class="QLabel" name="label_73">
-                      <property name="text">
-                       <string>攻击间隔：</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QLabel" name="label_74">
-                      <property name="text">
-                       <string>TextLabel</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
+                   <widget class="QLabel" name="F_AI">
+                    <property name="font">
+                     <font>
+                      <pointsize>12</pointsize>
+                     </font>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel{
+	
+	color: rgb(255, 210, 106);
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>
                </layout>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_30">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_41" stretch="3,1,7,1">
+            <item>
+             <widget class="QTextBrowser" name="Battle_info">
+              <property name="font">
+               <font>
+                <pointsize>11</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_22">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_25" stretch="1,2,1">
+              <item>
+               <spacer name="horizontalSpacer_28">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_39">
+                <item>
+                 <widget class="QGroupBox" name="Battle_skill_1">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QGroupBox{
+border: 2px solid gray;
+border-radius: 15px;
+margin-top: 1ex;
+	background-color: rgba(111, 255, 250, 125);
+	border-color: rgb(36, 159, 211);
+}
+QGroupBox::title{
+	subcontrol-origin:margin;
+	subcontrol-position:top center;
+	color: rgb(149, 96, 36);
+}
+</string>
+                  </property>
+                  <property name="title">
+                   <string>--</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_22">
+                   <property name="leftMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_21">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_54">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_55">
+                         <item>
+                          <widget class="QLabel" name="label_30">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>威力:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_dmg_1">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_56">
+                         <item>
+                          <widget class="QLabel" name="label_31">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>属性:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_attr_1">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_57">
+                       <item>
+                        <widget class="QLabel" name="label_32">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>CD:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="Battle_skill_cd_1">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>--</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="Battle_skill_2">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QGroupBox{
+border: 2px solid gray;
+border-radius: 15px;
+margin-top: 1ex;
+	background-color: rgba(111, 255, 250, 125);
+	border-color: rgb(36, 159, 211);
+}
+QGroupBox::title{
+	subcontrol-origin:margin;
+	subcontrol-position:top center;
+	color: rgb(149, 96, 36);
+}
+</string>
+                  </property>
+                  <property name="title">
+                   <string>--</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_24">
+                   <property name="leftMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_23">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_62">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_63">
+                         <item>
+                          <widget class="QLabel" name="label_36">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>威力:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_dmg_2">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_64">
+                         <item>
+                          <widget class="QLabel" name="label_37">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>属性:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_attr_2">
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_65">
+                       <item>
+                        <widget class="QLabel" name="label_38">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>CD:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="Battle_skill_cd_2">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>--</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="Battle_skill_3">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QGroupBox{
+border: 2px solid gray;
+border-radius: 15px;
+margin-top: 1ex;
+	background-color: rgba(111, 255, 250, 125);
+	border-color: rgb(36, 159, 211);
+}
+QGroupBox::title{
+	subcontrol-origin:margin;
+	subcontrol-position:top center;
+	color: rgb(149, 96, 36);
+}
+</string>
+                  </property>
+                  <property name="title">
+                   <string>--</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_23">
+                   <property name="leftMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_22">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_58">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_59">
+                         <item>
+                          <widget class="QLabel" name="label_33">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>威力:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_dmg_3">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_60">
+                         <item>
+                          <widget class="QLabel" name="label_34">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>属性:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_attr_3">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+ rgb(234, 102, 50);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_61">
+                       <item>
+                        <widget class="QLabel" name="label_35">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>CD:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="Battle_skill_cd_3">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>--</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QGroupBox" name="Battle_skill_4">
+                  <property name="font">
+                   <font>
+                    <pointsize>12</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QGroupBox{
+border: 2px solid gray;
+border-radius: 15px;
+margin-top: 1ex;
+	background-color: rgba(111, 255, 250, 125);
+	border-color: rgb(36, 159, 211);
+}
+QGroupBox::title{
+	subcontrol-origin:margin;
+	subcontrol-position:top center;
+	color: rgb(149, 96, 36);
+}
+</string>
+                  </property>
+                  <property name="title">
+                   <string>--</string>
+                  </property>
+                  <layout class="QGridLayout" name="gridLayout_25">
+                   <property name="leftMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="topMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>5</number>
+                   </property>
+                   <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_24">
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_66">
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_67">
+                         <item>
+                          <widget class="QLabel" name="label_39">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>威力:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_dmg_4">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                       <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_68">
+                         <item>
+                          <widget class="QLabel" name="label_40">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>属性:</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item>
+                          <widget class="QLabel" name="Battle_skill_attr_4">
+                           <property name="font">
+                            <font>
+                             <pointsize>12</pointsize>
+                            </font>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                           </property>
+                           <property name="text">
+                            <string>--</string>
+                           </property>
+                          </widget>
+                         </item>
+                        </layout>
+                       </item>
+                      </layout>
+                     </item>
+                     <item>
+                      <layout class="QHBoxLayout" name="horizontalLayout_69">
+                       <item>
+                        <widget class="QLabel" name="label_41">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>CD:</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QLabel" name="Battle_skill_cd_4">
+                         <property name="font">
+                          <font>
+                           <pointsize>12</pointsize>
+                          </font>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QLabel{
+	
+	color: rgb(204, 87, 33);
+}</string>
+                         </property>
+                         <property name="text">
+                          <string>--</string>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_27">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_41" stretch="3,1,7,1">
-              <item>
-               <widget class="QTextBrowser" name="Battle_info"/>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_22">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_25" stretch="1,2,1">
-                <item>
-                 <spacer name="horizontalSpacer_28">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_39">
-                  <item>
-                   <widget class="QGroupBox" name="Skill_9">
-                    <property name="title">
-                     <string>--</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_22">
-                     <property name="leftMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>5</number>
-                     </property>
-                     <item row="0" column="0">
-                      <layout class="QVBoxLayout" name="verticalLayout_21">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_54">
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_55">
-                           <item>
-                            <widget class="QLabel" name="label_30">
-                             <property name="text">
-                              <string>威力:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_1_dmg_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_56">
-                           <item>
-                            <widget class="QLabel" name="label_31">
-                             <property name="text">
-                              <string>属性:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_1_attr_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_57">
-                         <item>
-                          <widget class="QLabel" name="label_32">
-                           <property name="text">
-                            <string>CD:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="Skill_1_cd_3">
-                           <property name="text">
-                            <string>--</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QGroupBox" name="Skill_11">
-                    <property name="title">
-                     <string>--</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_24">
-                     <property name="leftMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>5</number>
-                     </property>
-                     <item row="0" column="0">
-                      <layout class="QVBoxLayout" name="verticalLayout_23">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_62">
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_63">
-                           <item>
-                            <widget class="QLabel" name="label_36">
-                             <property name="text">
-                              <string>威力:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_3_dmg_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_64">
-                           <item>
-                            <widget class="QLabel" name="label_37">
-                             <property name="text">
-                              <string>属性:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_3_attr_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_65">
-                         <item>
-                          <widget class="QLabel" name="label_38">
-                           <property name="text">
-                            <string>CD:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="Skill_3_cd_3">
-                           <property name="text">
-                            <string>--</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QGroupBox" name="Skill_10">
-                    <property name="title">
-                     <string>--</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_23">
-                     <property name="leftMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>5</number>
-                     </property>
-                     <item row="0" column="0">
-                      <layout class="QVBoxLayout" name="verticalLayout_22">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_58">
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_59">
-                           <item>
-                            <widget class="QLabel" name="label_33">
-                             <property name="text">
-                              <string>威力:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_2_dmg_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_60">
-                           <item>
-                            <widget class="QLabel" name="label_34">
-                             <property name="text">
-                              <string>属性:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_2_attr_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_61">
-                         <item>
-                          <widget class="QLabel" name="label_35">
-                           <property name="text">
-                            <string>CD:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="Skill_2_cd_3">
-                           <property name="text">
-                            <string>--</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QGroupBox" name="Skill_12">
-                    <property name="title">
-                     <string>--</string>
-                    </property>
-                    <layout class="QGridLayout" name="gridLayout_25">
-                     <property name="leftMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>5</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>5</number>
-                     </property>
-                     <item row="0" column="0">
-                      <layout class="QVBoxLayout" name="verticalLayout_24">
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_66">
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_67">
-                           <item>
-                            <widget class="QLabel" name="label_39">
-                             <property name="text">
-                              <string>威力:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_4_dmg_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                         <item>
-                          <layout class="QHBoxLayout" name="horizontalLayout_68">
-                           <item>
-                            <widget class="QLabel" name="label_40">
-                             <property name="text">
-                              <string>属性:</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QLabel" name="Skill_4_attr_3">
-                             <property name="text">
-                              <string>--</string>
-                             </property>
-                            </widget>
-                           </item>
-                          </layout>
-                         </item>
-                        </layout>
-                       </item>
-                       <item>
-                        <layout class="QHBoxLayout" name="horizontalLayout_69">
-                         <item>
-                          <widget class="QLabel" name="label_41">
-                           <property name="text">
-                            <string>CD:</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QLabel" name="Skill_4_cd_3">
-                           <property name="text">
-                            <string>--</string>
-                           </property>
-                          </widget>
-                         </item>
-                        </layout>
-                       </item>
-                      </layout>
-                     </item>
-                    </layout>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_27">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_30">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
+             <spacer name="horizontalSpacer_30">
+              <property name="styleSheet">
+               <string>QLabel{
+ rgb(234, 102, 50);
+}</string>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>

@@ -8,6 +8,7 @@
 #include <set>
 #include <random>
 #include <QString>
+#include <QList>
 #include <math.h>
 
 #define MAX_LEVEL 15
@@ -71,7 +72,7 @@ public:
     virtual QString buff_inspire(const Buff);
     void start_battle();
     void buff_erase(const Buff);
-    QString buff_to_HP();
+    QStringList buff_to_HP();
     void get_exp(const int);
 
 private:
